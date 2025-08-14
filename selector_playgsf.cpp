@@ -506,7 +506,7 @@ void draw_playback(const TrackMetadata& meta, int elapsed) {
     // Dibujar barra de progreso entre Copyright y Loop
     int y_progress = y + (SCREEN_HEIGHT - 200 - y) / 2;
 
-    int bar_x = 20;
+    int bar_x = 40;
     int bar_w = SCREEN_WIDTH - 80;
     int bar_h = 40;
 
