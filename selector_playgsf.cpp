@@ -26,7 +26,7 @@ extern "C" {
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
-#define FONT_SIZE 32
+#define FONT_SIZE 40
 #define MUSIC_ROOT "/mnt/SDCARD/Music/GBA"
 
 struct Entry {
@@ -405,7 +405,7 @@ void draw_list() {
         render_text(prefix + entries[i].name, 10, y, color);
         y += lh;
     }
-    int hy = SCREEN_HEIGHT - 60;
+    int hy = SCREEN_HEIGHT - 120;
     render_text("A: Play/Enter  B: Back  L1/R1: Jump", 10, hy + lh*0, white);
     render_text("SL: Exit  Menu: Lock", 10, hy + lh*1, white);
 
@@ -446,24 +446,24 @@ void draw_playback(const TrackMetadata& meta, int elapsed) {
 
     int y = 20;
     render_text("Now Playing...", 20, y, green);
-    y += 40;
+    y += 80;
     
     if (!meta.game.empty()) {
         render_text("Game:", 20, y, green);
         render_scrolling_text(meta.game, x_text, y, max_width, orange, scroll_start_time_game);
-        y += 30;
+        y += 50;
     }
     
     if (!meta.title.empty()) {
         render_text("Title:", 20, y, green);
         render_scrolling_text(meta.title, x_text, y, max_width, orange, scroll_start_time_title);
-        y += 30;
+        y += 50;
     }
     
     if (!meta.artist.empty()) {
         render_text("Artist:", 20, y, green);
         render_scrolling_text(meta.artist, x_text, y, max_width, orange, scroll_start_time_artist);
-        y += 30;
+        y += 50;
     }
 
 
@@ -475,7 +475,7 @@ void draw_playback(const TrackMetadata& meta, int elapsed) {
 
         render_text("Length:", 20, y, green);
         render_text(formatted_length, 20 + max_label_width + padding, y, orange);
-        y += 30;
+        y += 50;
     }
 
     {
@@ -485,30 +485,30 @@ void draw_playback(const TrackMetadata& meta, int elapsed) {
         snprintf(buf, sizeof(buf), "%02d:%02d", min, sec);
         render_text("Elapsed:", 20, y, green);
         render_text(buf, 20 + max_label_width + padding, y, orange);
-        y += 30;
+        y += 50;
     }
     if (!meta.year.empty()) {
         render_text("Year:", 20, y, green);
         render_text(meta.year, 20 + max_label_width + padding, y, orange);
-        y += 30;
+        y += 50;
     }
     if (!meta.gsf_by.empty()) {
         render_text("GSF By:", 20, y, green);
         render_text(meta.gsf_by, 20 + max_label_width + padding, y, orange);
-        y += 30;
+        y += 50;
     }
     if (!meta.copyright.empty()) {
         render_text("Copyright:", 20, y, green);
         render_text(meta.copyright, 20 + max_label_width + padding, y, orange);
-        y += 30;
+        y += 50;
     }
 
     // Dibujar barra de progreso entre Copyright y Loop
-    int y_progress = y + (SCREEN_HEIGHT - 100 - y) / 2;
+    int y_progress = y + (SCREEN_HEIGHT - 200 - y) / 2;
 
     int bar_x = 20;
-    int bar_w = SCREEN_WIDTH - 40;
-    int bar_h = 20;
+    int bar_w = SCREEN_WIDTH - 80;
+    int bar_h = 40;
 
     SDL_Rect border_rect = {bar_x, y_progress, bar_w, bar_h};
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // borde blanco
@@ -527,7 +527,7 @@ void draw_playback(const TrackMetadata& meta, int elapsed) {
     // Color para bass (activo/inactivo)
     SDL_Color bass_color = bass_enabled_local ? SDL_Color{255, 0, 0, 255} : SDL_Color{120, 100, 0, 255};
     int base_x = 10;
-    int y_pos = SCREEN_HEIGHT - 100;
+    int y_pos = SCREEN_HEIGHT - 140;
     
     // Mostrar [BASS]
     render_text("[BASS]", base_x, y_pos, bass_color);
@@ -554,14 +554,14 @@ void draw_playback(const TrackMetadata& meta, int elapsed) {
     // Finalmente, mantener el renderizado de Loop: y su valor con el espacio que corresponda
     std::string looptxt = (loop_mode == LOOP_ALL) ? "ALL" : (loop_mode == LOOP_ONE) ? "ONE" : "OFF";
     
-    int loop_label_x = SCREEN_WIDTH - 180; // O ajustar según espacio necesario
-    int loop_value_x = loop_label_x + 100;
+    int loop_label_x = SCREEN_WIDTH - 240; // O ajustar según espacio necesario
+    int loop_value_x = loop_label_x + 120;
 
     render_text("Loop:", loop_label_x, y_pos, green);
     render_text(looptxt, loop_value_x, y_pos, orange);
 
-    render_text("B:Back L2/R2:Prev/Next Y:Loop Mode X:Bass Mode", 10, SCREEN_HEIGHT - 70, green);
-    render_text("ST:Pause  SL:exit  Menu:Lock", 10, SCREEN_HEIGHT - 40, green);
+    render_text("B:Back L2/R2:Prev/Next Y:Loop Mode X:Bass Mode", 10, SCREEN_HEIGHT - 90, green);
+    render_text("ST:Pause  SL:exit  Menu:Lock", 10, SCREEN_HEIGHT - 50, green);
 
     render_status_monitor(SCREEN_WIDTH);
     SDL_RenderPresent(renderer);
